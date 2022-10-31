@@ -10,7 +10,10 @@
     const ws = new WebSocket("ws://127.0.0.1:8080")
 
     // send test
-    function say1() {
+    function say0() {
+    ws.send("0") // 서버에 데이터 전송
+  }
+  function say1() {
     ws.send("1") // 서버에 데이터 전송
   }
   function say2() {
@@ -19,18 +22,15 @@
   function say3() {
     ws.send("3") // 서버에 데이터 전송
   }
-  function say4() {
-    ws.send("4") // 서버에 데이터 전송
-  }
   </script>
 </head>
 
 <body>
   <h1>Hello Express</h1>
+<button onClick="say0()">Say 0</button>
 <button onClick="say1()">Say 1</button>
 <button onClick="say2()">Say 2</button>
 <button onClick="say3()">Say 3</button>
-<button onClick="say4()">Say 4</button>
 </body>
 
 </html>
