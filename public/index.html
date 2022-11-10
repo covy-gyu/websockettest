@@ -22,15 +22,29 @@
   function say3() {
     ws.send("3") // 서버에 데이터 전송
   }
+
+  
   </script>
 </head>
 
 <body>
   <h1>Hello Express</h1>
-<button onClick="say0()">Say 0</button>
-<button onClick="say1()">Say 1</button>
-<button onClick="say2()">Say 2</button>
-<button onClick="say3()">Say 3</button>
+<button onClick="say0()">Say 0 "Idle"</button>
+<button onClick="say1()">Say 1 "Walking"</button>
+<button onClick="say2()">Say 2 "Sitting"</button>
+<button onClick="say3()">Say 3 "Dying"</button>
+
+<input type='checkbox'
+       name='animal' 
+       value='dog'
+       onclick='getCheckboxValue(event)'/> 개
+
+<input type='checkbox' 
+       name='animal' 
+       value='cat' 
+       onclick='getCheckboxValue(event)'/> 고양이
+
+<div id='result'></div>
 </body>
 
 </html>
