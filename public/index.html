@@ -5,22 +5,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Websocket Test</title>
+  <script src="server.js"> </script>
 
   <script>
     const ws = new WebSocket("ws://127.0.0.1:8080")
 
+    //var id = document.getElementById('client_id').value;
     // send test
+    clientInformation
     function say0() {
-      ws.send("0") // 서버에 데이터 전송
+      var id = document.getElementById('client_id').value;
+      ws.send(`0 ${id}`) // 서버에 데이터 전송
     }
     function say1() {
-      ws.send("1") // 서버에 데이터 전송
+      var id = document.getElementById('client_id').value;
+      ws.send(`1 ${id}`) // 서버에 데이터 전송
     }
     function say2() {
-      ws.send("2") // 서버에 데이터 전송
+      var id = document.getElementById('client_id').value;
+      ws.send(`2 ${id}`) // 서버에 데이터 전송
     }
     function say3() {
-      ws.send("3") // 서버에 데이터 전송
+      var id = document.getElementById('client_id').value;
+      ws.send(`3 ${id}`) // 서버에 데이터 전송
     }
 
     function getCheckboxValue(event) {
@@ -35,15 +42,29 @@
         = result;
     }
 
+    ws.addEventListener
+
   </script>
 </head>
 
 <body>
   <h1>Hello Express</h1>
+  <input type='text' id='client_id' size="10px" value='' placeholder='id 입력'/>
   <button onClick="say0()">Say 0 "Idle"</button>
   <button onClick="say1()">Say 1 "Walking"</button>
   <button onClick="say2()">Say 2 "Sitting"</button>
   <button onClick="say3()">Say 3 "Dying"</button>
+
+  
+  <table class="table test">
+    <tr>
+        <th>ws</th>
+        <th>id</th>
+    </tr>
+    <tbody id="table1">
+
+    </tbody>
+  </table>
 
   <input type='checkbox' name='isFoward' value='1' onclick='getCheckboxValue(event)' /> isFoward
 

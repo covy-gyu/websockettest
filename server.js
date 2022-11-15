@@ -17,12 +17,16 @@ const wss = new WebSocketServer({ port: 8080 }); // initiate a new server that l
 // set up event handlers and do other things upon a client connecting to the server
 wss.on('connection', (ws) => {
     // create an id to track the client
-    const id = randomUUID();
+    const rid = randomUUID();
+    let id = rid.substring(0,3);
+
     clients.set(ws, id);
     console.log(`new connection assigned id: ${id}`);
     // send the id back to the newly connected client
     ws.send(`You have been assigned id ${id}`);
 
+    //console.log(clients.get(ws))
+    buildTable(clients);
     // send a message to all connected clients upon receiving a message from one of the connected clients
     ws.on('message', (data) => {
         console.log(`received: ${data}`);
@@ -54,3 +58,25 @@ function serverBroadcast(message) {
 }
 
 console.log('The server is running and waiting for connections');
+
+function buildTable(data) {
+    var table = document.getElementById('table1')
+
+    // clients.forEach((client)=>{
+    //     if(client.readyState === WebSocket.OPEN){
+    //         var row = `<tr>
+    //                     <td>${client}</td>
+    //                     <td>${data[i].나이}</td>
+    //                     <td>${data[i].성별}</td>
+    //                     </tr>`
+    //         table.innerHTML += row
+    //     }
+    // })
+    for (var i=0; i < data.length; i++)
+    {
+        var row = `<tr>
+                    <td>${data[i]}</td>
+                   </tr>`
+        table.innerHTML += row
+    }
+}
