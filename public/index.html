@@ -29,6 +29,10 @@
       var id = document.getElementById('client_id').value;
       ws.send(`3 ${id}`) // 서버에 데이터 전송
     }
+    function say4() {
+      var id = document.getElementById('client_id').value;
+      ws.send(`4 ${id}`) // 서버에 데이터 전송
+    }
 
     function getCheckboxValue(event) {
       let result = '';
@@ -52,8 +56,9 @@
   <input type='text' id='client_id' size="10px" value='' placeholder='id 입력'/>
   <button onClick="say0()">Say 0 "Idle"</button>
   <button onClick="say1()">Say 1 "Walking"</button>
-  <button onClick="say2()">Say 2 "Sitting"</button>
-  <button onClick="say3()">Say 3 "Dying"</button>
+  <button onClick="say2()">Say 2 "Running"</button>
+  <button onClick="say3()">Say 3 "Sitting"</button>
+  <button onClick="say4()">Say 4 "Laying"</button>
 
   
   <table class="table test">
