@@ -1,82 +1,73 @@
-import WebSocket, { WebSocketServer } from 'ws';
-import { randomUUID } from 'crypto';
-import express from 'express';
+import WebSocket, { WebSocketServer } from "ws";
+import { randomUUID } from "crypto";
+import express from "express";
 
-const app = express()
+const app = express();
 
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 app.listen(8000, () => {
-  console.log(`Example app listening on port 8000`)
-})
+  console.log(`Example app listening on port 8000`);
+});
 
 const clients = new Map(); // has to be a Map instead of {} due to non-string keys
 
 const wss = new WebSocketServer({ port: 8080 }); // initiate a new server that listens on port 8080
+let arr = [];
 
 // set up event handlers and do other things upon a client connecting to the server
-wss.on('connection', (ws) => {
-    // create an id to track the client
-    const rid = randomUUID();
-    let id = rid.substring(0,3);
+wss.on("connection", (ws) => {
+  // create an id to track the client
+  const rid = randomUUID();
+  let id = rid.substring(0, 3);
 
-    clients.set(ws, id);
-    console.log(`new connection assigned id: ${id}`);
-    // send the id back to the newly connected client
-    ws.send(`You have been assigned id ${id}`);
+  clients.set(ws, id);
+  console.log(`new connection assigned id: ${id}`);
+  
+  // send the id back to the newly connected client
+  // connected users info - broadcast
+  arr = updateArrID(clients);
+  serverBroadcast(JSON.stringify(arr))
 
-    //console.log(clients.get(ws))
-    buildTable(clients);
-    // send a message to all connected clients upon receiving a message from one of the connected clients
-    ws.on('message', (data) => {
-        console.log(`received: ${data}`);
-        // serverBroadcast(`Client ${clients.get(ws)} ${data}`);
-        serverBroadcast(`${data}`);
-    });
+  // onmessage, request connected users info for table load
+  ws.on("message", (data) => {
+    if (data == "tableLoad") {
+        arr = updateArrID(clients);
+        ws.send(JSON.stringify(arr));
+    }
+    console.log(`received: ${data}`);
 
-    // stop tracking the client upon that client closing the connection
-    ws.on('close', () => {
-        console.log(`connection (id = ${clients.get(ws)}) closed`);
-        clients.delete(ws);
-    });
+  });
 
+  // stop tracking the client upon that client closing the connection
+  ws.on("close", () => {
+    console.log(`connection (id = ${clients.get(ws)}) closed`);
+    clients.delete(ws);
+    arr = updateArrID(clients);
+    serverBroadcast(JSON.stringify(arr))
+  });
 });
 
 // send a message to all the connected clients about how many of them there are every 15 seconds
-setInterval(() => {
-    console.log(`Number of connected clients: ${clients.size}`);
-    serverBroadcast(`Number of connected clients: ${clients.size}`);
-}, 15000);
+// setInterval(() => {
+//     console.log(`Number of connected clients: ${clients.size}`);
+//     serverBroadcast(`Number of connected clients: ${clients.size}`);
+// }, 15000);
 
 // function for sending a message to every connected client
 function serverBroadcast(message) {
-    wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(message);
-        }
-    });
-}
-
-console.log('The server is running and waiting for connections');
-
-function buildTable(data) {
-    var table = document.getElementById('table1')
-
-    // clients.forEach((client)=>{
-    //     if(client.readyState === WebSocket.OPEN){
-    //         var row = `<tr>
-    //                     <td>${client}</td>
-    //                     <td>${data[i].나이}</td>
-    //                     <td>${data[i].성별}</td>
-    //                     </tr>`
-    //         table.innerHTML += row
-    //     }
-    // })
-    for (var i=0; i < data.length; i++)
-    {
-        var row = `<tr>
-                    <td>${data[i]}</td>
-                   </tr>`
-        table.innerHTML += row
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
     }
+  });
 }
+function updateArrID(clients) {
+  var arrID = [];
+  for (const [key, value] of clients) {
+    arrID.push(value);
+  }
+  return arrID;
+}
+
+console.log("The server is running and waiting for connections");
