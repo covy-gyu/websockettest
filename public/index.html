@@ -1,89 +1,87 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Websocket Test</title>
 
-    <script>
-      const ws = new WebSocket("ws://127.0.0.1:8080");
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Websocket Test</title>
 
-      let id = "";
-      var request = [];
-      let clients = [];
-      ws.onmessage = function (event) {
-        console.log(event.data);
-        clients = JSON.parse(event.data);
-      };
-      function say0() {
-        var id = document.getElementById("client_id").value;
-        console.log(id)
-        request.push(id)
-        request.push(0)
-        ws.send(id, data); // 서버에 데이터 전송
-      }
+  <script>
+    const ws = new WebSocket("ws://127.0.0.1:8080");
 
-      function say1() {
-        var id = document.getElementById("client_id").value;
-        ws.send(`1 ${id}`); // 서버에 데이터 전송
-      }
-      function say2() {
-        var id = document.getElementById("client_id").value;
-        ws.send(`2 ${id}`); // 서버에 데이터 전송
-      }
-      function say3() {
-        var id = document.getElementById("client_id").value;
-        ws.send(`3 ${id}`); // 서버에 데이터 전송
-      }
-      function say4() {
-        var id = document.getElementById("client_id").value;
-        ws.send(`4 ${id}`); // 서버에 데이터 전송
-      }
+    let id = "";
+    var request = [];
+    let clients = [];
+    ws.onmessage = function (json) {
+      console.log(json.data);
+      clients = JSON.parse(json.data);
+    };
+    function say0() {
+      var id = document.getElementById("UE_id").value;
+      console.log(id)
+      request.push(id)
+      request.push(0)
+      ws.send(id, data); // 서버에 데이터 전송
+    }
 
-      function buildTable() {
-        var table = document.getElementById("table1");
-        var row = "";
-        for (var i = 0; i < clients.length; i++) {
-          row += `<tr>
+    function say1() {
+      var id = document.getElementById("client_id").value;
+      ws.send(`1 ${id}`); // 서버에 데이터 전송
+    }
+    function say2() {
+      var id = document.getElementById("client_id").value;
+      ws.send(`2 ${id}`); // 서버에 데이터 전송
+    }
+    function say3() {
+      var id = document.getElementById("client_id").value;
+      ws.send(`3 ${id}`); // 서버에 데이터 전송
+    }
+    function say4() {
+      var id = document.getElementById("client_id").value;
+      ws.send(`4 ${id}`); // 서버에 데이터 전송
+    }
+
+    function buildTable() {
+      var table = document.getElementById("table1");
+      var row = "";
+      for (var i = 0; i < clients.length; i++) {
+        row += `<tr>
                   <td>${clients[i]}</td>
                   </tr>`;
-        }
-        table.innerHTML = row;
       }
+      table.innerHTML = row;
+    }
 
       //send a message to all the connected clients about how many of them there are every 15 seconds
-      setInterval(() => {
-        //접속자 정보 신호 인터벌 10초
-        ws.send("tableLoad");
-      }, 10000);
+      // setInterval(() => {
+      //   //접속자 정보 신호 인터벌 10초
+      //   ws.send("tableLoad");
+      // }, 10000);
 
-    </script>
-  </head>
+  </script>
+</head>
 
-  <body>
-    <h1>Hello Express</h1>
-    <input
-      type="text"
-      id="client_id"
-      size="10px"
-      value=""
-      placeholder="id 입력"
-    />
-    <button onClick="say0()">Say "Idle"</button>
-    <button onClick="say1()">Say "Walking"</button>
-    <button onClick="say2()">Say "Running"</button>
-    <button onClick="say3()">Say "Sitting"</button>
-    <button onClick="say4()">Say "Laying"</button>
+<body>
+  <h1>Server Express</h1>
+  <input type="text" id="JN_id" size="10px" value="" placeholder="Jetson id 입력" />
+  <input type="text" id="UE_id" size="10px" value="" placeholder="UE id 입력" />
 
-    <div>
-      <button onClick="buildTable()"> 🔄 </button>
-    </div>
+  <button onClick="say0()">Say "Idle"</button>
+  <button onClick="say1()">Say "Walking"</button>
+  <button onClick="say2()">Say "Running"</button>
+  <button onClick="say3()">Say "Sitting"</button>
+  <button onClick="say4()">Say "Laying"</button>
 
-    <table class="table test">
-      <tr>
-        <th>id</th>
-      </tr>
-      <tbody id="table1"></tbody>
-    </table>
-  </body>
+  <div>
+    <button onClick="buildTable()"> 🔄 </button>
+  </div>
+
+  <table class="table test">
+    <tr>
+      <th>id</th>
+    </tr>
+    <tbody id="table1"></tbody>
+  </table>
+</body>
+
 </html>
